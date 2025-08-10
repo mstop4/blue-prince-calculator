@@ -1,25 +1,21 @@
 import './App.css';
-import { useState } from 'react';
-import { useCalculator } from './store/calculatorStore';
+import { useState, useEffect } from 'react';
+import { useCalculator } from './calculator/useCalculator';
 
 function App() {
-  const [commandDisplay, setCommandDisplay] = useState('_');
-  const [resultDisplay, setResultDisplay] = useState('_');
-  const addCommand = useCalculator((state) => state.addCommand);
+  const { state, add, calculate, commandDisplay } = useCalculator();
+  const [resultDisplay, setResultDisplay] = useState('0');
+
+  useEffect(() => {
+    setResultDisplay(state.result.toString());
+  }, [state.result]);
 
   const handleAddClick = () => {
-    addCommand(8);
-    const { commands } = useCalculator.getState();
-    setCommandDisplay(
-      commands.reduce((total, command) => `${total}${command.toString()} `, '')
-    );
+    add(8);
   };
 
   const handleCalculateClick = () => {
-    const { commands } = useCalculator.getState();
-    console.log(commands);
-    const result = commands.reduce((total, command) => total + command, 0);
-    setResultDisplay(result.toString());
+    calculate();
   };
 
   return (
