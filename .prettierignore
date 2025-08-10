@@ -1,0 +1,10 @@
+# Ignore artifacts:
+build
+package.json
+package-lock.json
+.prettierrc
+.lintstagedrc.mjs
+eslint.config.mjs
+README.md
+tsconfig.json
+src/vite-env.d.ts
