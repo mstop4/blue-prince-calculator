@@ -1,13 +1,13 @@
 interface DigitButtonProps {
   value: number;
-  add: (value: number) => void;
+  addDigit: (value: number) => void;
 }
 
 export default function DigitButton(props: DigitButtonProps) {
-  const { value, add } = props;
+  const { value, addDigit } = props;
 
   const handleClick = () => {
-    add(value);
+    addDigit(value);
   };
 
   return (

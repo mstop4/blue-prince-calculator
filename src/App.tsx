@@ -4,7 +4,7 @@ import { useCalculator } from './calculator/useCalculator';
 import DigitButton from './components/DigitButton';
 
 function App() {
-  const { state, add, calculate, clear, commandDisplay } = useCalculator();
+  const { state, addDigit, calculate, clear, commandDisplay } = useCalculator();
   const [resultDisplay, setResultDisplay] = useState('0');
 
   useEffect(() => {
@@ -21,7 +21,7 @@ function App() {
 
   const keypad = [];
   for (let i = 0; i <= 9; i++) {
-    keypad.push(<DigitButton key={`key${i}`} value={i} add={add} />);
+    keypad.push(<DigitButton key={`key${i}`} value={i} {...{ addDigit }} />);
   }
 
   return (
