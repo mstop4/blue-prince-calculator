@@ -14,6 +14,16 @@ const createNewCommand = (): CalculatorCommand => ({
   hasOneThirdModifier: false,
 });
 
+const parseCommands = (commands: CalculatorCommand[]): number => {
+  let result = 0;
+
+  for (const command of commands) {
+    result += command.value;
+  }
+
+  return result;
+};
+
 const calculatorReducer = (
   state: CalculatorState,
   action: CalculatorAction
@@ -32,10 +42,7 @@ const calculatorReducer = (
     case 'calculate':
       return {
         ...state,
-        result: state.commands.reduce(
-          (total, command) => total + command.value,
-          0
-        ),
+        result: parseCommands(state.commands),
       };
 
     case 'clear':
