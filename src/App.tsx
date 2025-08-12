@@ -2,9 +2,12 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import { useCalculator } from './calculator/useCalculator';
 import DigitButton from './components/DigitButton';
+import OperatorButton from './components/OperatorButton';
+import { ArithmeticOperator } from './calculator/useCalculator.types';
 
 function App() {
-  const { state, addDigit, calculate, clear, commandDisplay } = useCalculator();
+  const { state, addDigit, changeOperator, calculate, clear, commandDisplay } =
+    useCalculator();
   const [resultDisplay, setResultDisplay] = useState('0');
 
   useEffect(() => {
@@ -27,6 +30,11 @@ function App() {
   return (
     <>
       {keypad}
+      <br />
+      <OperatorButton
+        operator={ArithmeticOperator.Add}
+        {...{ changeOperator }}
+      />
       <br />
       <button onClick={handleCalculateClick}>Calculate</button>
       <button onClick={handleClearClick}>Clear</button>

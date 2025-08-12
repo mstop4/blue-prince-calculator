@@ -1,10 +1,12 @@
 import { useReducer } from 'react';
-import type {
-  CalculatorAction,
-  CalculatorCommand,
-  CalculatorState,
-  ICalculator,
+import {
+  ArithmeticOperator,
+  type CalculatorAction,
+  type CalculatorCommand,
+  type CalculatorState,
+  type ICalculator,
 } from './useCalculator.types';
+import { produce } from 'immer';
 
 const createNewCommand = (): CalculatorCommand => ({
   value: 0,
@@ -15,56 +17,70 @@ const createNewCommand = (): CalculatorCommand => ({
 });
 
 const parseCommands = (commands: CalculatorCommand[]): number => {
-  let result = 0;
-
-  for (const command of commands) {
-    result += command.value;
-  }
-
-  return result;
+  // NOTE: will be expanded in the future to include more than addition
+  return commands.reduce((result, command) => {
+    return result + command.value;
+  }, 0);
 };
 
-const calculatorReducer = (
-  state: CalculatorState,
-  action: CalculatorAction
-): CalculatorState => {
-  switch (action.type) {
-    case 'addDigit': {
-      const newCommand = createNewCommand();
-      newCommand.value = action.value;
+const calculatorReducer = produce<CalculatorState, [CalculatorAction]>(
+  (draft, action) => {
+    switch (action.type) {
+      case 'addDigit': {
+        const lastCommand = draft.goToNextCommand
+          ? undefined
+          : draft.commands.at(-1);
 
-      return {
-        ...state,
-        commands: [...state.commands, newCommand],
-      };
+        if (!lastCommand) {
+          const newCommand = createNewCommand();
+          newCommand.value = action.value;
+          draft.goToNextCommand = false;
+          draft.commands.push(newCommand);
+        } else {
+          lastCommand.value = lastCommand.value * 10 + action.value;
+        }
+        break;
+      }
+
+      case 'changeOperator': {
+        const lastCommand = draft.commands.at(-1);
+
+        if (lastCommand) {
+          lastCommand.arithmeticOperator = action.operator;
+          draft.goToNextCommand = true;
+        }
+
+        break;
+      }
+
+      case 'calculate':
+        draft.result = parseCommands(draft.commands);
+        break;
+
+      case 'clear':
+        draft.commands = [];
+        draft.result = 0;
+        draft.goToNextCommand = false;
+        break;
+
+      default:
+        break;
     }
-
-    case 'calculate':
-      return {
-        ...state,
-        result: parseCommands(state.commands),
-      };
-
-    case 'clear':
-      return {
-        commands: [],
-        result: 0,
-      };
-
-    default:
-      return state;
   }
-};
+);
 
 export const useCalculator = (
-  initialState: Array<CalculatorCommand> = []
+  initialCommands: Array<CalculatorCommand> = []
 ): ICalculator => {
   const [state, dispatch] = useReducer(calculatorReducer, {
-    commands: initialState,
+    commands: initialCommands,
     result: 0,
+    goToNextCommand: false,
   });
 
   const addDigit = (value: number) => dispatch({ type: 'addDigit', value });
+  const changeOperator = (operator: ArithmeticOperator) =>
+    dispatch({ type: 'changeOperator', operator });
   const clear = () => dispatch({ type: 'clear' });
   const calculate = () => dispatch({ type: 'calculate' });
   const commandDisplay = state.commands.reduce(
@@ -75,6 +91,7 @@ export const useCalculator = (
   return {
     state,
     addDigit,
+    changeOperator,
     clear,
     calculate,
     commandDisplay,

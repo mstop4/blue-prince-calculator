@@ -1,4 +1,4 @@
-const ArithmeticOperator = {
+export const ArithmeticOperator = {
   Add: '+',
   Subtract: '-',
   Multiply: '*',
@@ -8,7 +8,7 @@ const ArithmeticOperator = {
 export type ArithmeticOperator =
   (typeof ArithmeticOperator)[keyof typeof ArithmeticOperator];
 
-const CircleOperator = {
+export const CircleOperator = {
   Square: 'S',
   Swap: 'D',
   RoundTo1: '~',
@@ -40,12 +40,17 @@ export type CalculatorCommand = {
 export type CalculatorState = {
   commands: Array<CalculatorCommand>;
   result: number;
+  goToNextCommand: boolean;
 };
 
 export type CalculatorAction =
   | {
       type: 'addDigit';
       value: number;
+    }
+  | {
+      type: 'changeOperator';
+      operator: ArithmeticOperator;
     }
   | {
       type: 'calculate';
@@ -57,6 +62,7 @@ export type CalculatorAction =
 export interface ICalculator {
   state: CalculatorState;
   addDigit: (value: number) => void;
+  changeOperator: (operator: ArithmeticOperator) => void;
   clear: () => void;
   calculate: () => void;
   commandDisplay: string;
