@@ -9,35 +9,67 @@ import {
 import { produce } from 'immer';
 
 const createNewCommand = (): CalculatorCommand => ({
-  value: 0,
+  value: null,
   arithmeticOperator: null,
   circleOperators: [],
   operandModifier: null,
   hasOneThirdModifier: false,
 });
 
-const parseCommands = (commands: CalculatorCommand[]): number => {
+const canGoToNextCommand = (command: CalculatorCommand) => {
+  return command.value !== null && command.arithmeticOperator !== null;
+};
+
+const parseCommands = (commands: CalculatorCommand[]) => {
   // NOTE: will be expanded in the future to include more than addition
-  return commands.reduce((result, command) => {
-    return result + command.value;
-  }, 0);
+  try {
+    return commands.reduce((result, command) => {
+      if (command.value === null) throw new Error('No value given');
+
+      switch (command.arithmeticOperator) {
+        case ArithmeticOperator.Add:
+          return result + command.value;
+
+        case ArithmeticOperator.Subtract:
+          return result - command.value;
+
+        case ArithmeticOperator.Multiply:
+          return result * command.value;
+
+        case ArithmeticOperator.Divide:
+          return result / command.value;
+
+        default:
+          return result;
+      }
+    }, 0);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+      return `Error: ${error.message}`;
+    }
+
+    return `Unknown error`;
+  }
 };
 
 const calculatorReducer = produce<CalculatorState, [CalculatorAction]>(
   (draft, action) => {
     switch (action.type) {
       case 'addDigit': {
-        const lastCommand = draft.goToNextCommand
-          ? undefined
-          : draft.commands.at(-1);
+        const lastCommand = draft.commands.at(-1);
 
-        if (!lastCommand) {
+        if (!lastCommand || canGoToNextCommand(lastCommand)) {
           const newCommand = createNewCommand();
           newCommand.value = action.value;
           draft.goToNextCommand = false;
           draft.commands.push(newCommand);
         } else {
-          lastCommand.value = lastCommand.value * 10 + action.value;
+          if (lastCommand.value !== null) {
+            lastCommand.value = lastCommand.value * 10 + action.value;
+          } else {
+            lastCommand.value = action.value;
+          }
         }
         break;
       }

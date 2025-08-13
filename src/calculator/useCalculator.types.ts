@@ -30,7 +30,7 @@ export type OperandModifier =
   (typeof OperandModifier)[keyof typeof OperandModifier];
 
 export type CalculatorCommand = {
-  value: number;
+  value: number | null;
   arithmeticOperator: ArithmeticOperator | null;
   circleOperators: [CircleOperator?, CircleOperator?];
   operandModifier: OperandModifier | null;
@@ -39,7 +39,7 @@ export type CalculatorCommand = {
 
 export type CalculatorState = {
   commands: Array<CalculatorCommand>;
-  result: number;
+  result: number | string;
   goToNextCommand: boolean;
 };
 

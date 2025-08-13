@@ -22,17 +22,33 @@ function App() {
     clear();
   };
 
-  const keypad = [];
-  for (let i = 0; i <= 9; i++) {
-    keypad.push(<DigitButton key={`key${i}`} value={i} {...{ addDigit }} />);
-  }
-
   return (
     <>
-      {keypad}
+      <DigitButton key={`key${0}`} value={0} {...{ addDigit }} />
+      <DigitButton key={`key${1}`} value={1} {...{ addDigit }} />
+      <DigitButton key={`key${2}`} value={2} {...{ addDigit }} />
+      <DigitButton key={`key${3}`} value={3} {...{ addDigit }} />
+      <DigitButton key={`key${4}`} value={4} {...{ addDigit }} />
+      <DigitButton key={`key${5}`} value={5} {...{ addDigit }} />
+      <DigitButton key={`key${6}`} value={6} {...{ addDigit }} />
+      <DigitButton key={`key${7}`} value={7} {...{ addDigit }} />
+      <DigitButton key={`key${8}`} value={8} {...{ addDigit }} />
+      <DigitButton key={`key${9}`} value={9} {...{ addDigit }} />
       <br />
       <OperatorButton
         operator={ArithmeticOperator.Add}
+        {...{ changeOperator }}
+      />
+      <OperatorButton
+        operator={ArithmeticOperator.Subtract}
+        {...{ changeOperator }}
+      />
+      <OperatorButton
+        operator={ArithmeticOperator.Multiply}
+        {...{ changeOperator }}
+      />
+      <OperatorButton
+        operator={ArithmeticOperator.Divide}
         {...{ changeOperator }}
       />
       <br />
