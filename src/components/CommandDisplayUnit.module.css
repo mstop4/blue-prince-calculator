@@ -1,0 +1,22 @@
+.unit {
+  font-size: 2rem;
+  font-weight: bold;
+  display: inline-block;
+  margin: 0 0.5rem;
+}
+
+.add {
+  color: SkyBlue;
+}
+
+.subtract {
+  color: Gold;
+}
+
+.multiply {
+  color: LightPink;
+}
+
+.divide {
+  color: MediumPurple;
+}

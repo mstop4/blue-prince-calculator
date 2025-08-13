@@ -12,6 +12,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "classnames": "^2.5.1",
     "immer": "^10.1.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"

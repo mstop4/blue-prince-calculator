@@ -19,7 +19,7 @@ function App() {
   };
 
   const commandDisplay = state.commands.map((command) => (
-    <CommandDisplayUnit value={command.value} key={command.value} />
+    <CommandDisplayUnit command={command} key={command.value} />
   ));
 
   const digitKeypad = useMemo(() => {
