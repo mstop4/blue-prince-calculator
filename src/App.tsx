@@ -6,9 +6,17 @@ import OperatorButton from './components/OperatorButton';
 import CommandDisplayUnit from './components/CommandDisplayUnit';
 
 import { ArithmeticOperator } from './calculator/useCalculator.types';
+import OneThirdButton from './components/OneThirdButton';
 
 function App() {
-  const { state, addDigit, changeOperator, calculate, clear } = useCalculator();
+  const {
+    state,
+    addDigit,
+    changeOperator,
+    changeOneThirdModifier,
+    calculate,
+    clear,
+  } = useCalculator();
 
   const handleCalculateClick = () => {
     calculate();
@@ -52,6 +60,7 @@ function App() {
         operator={ArithmeticOperator.Divide}
         {...{ changeOperator }}
       />
+      <OneThirdButton {...{ changeOneThirdModifier }} />
       <br />
       <button onClick={handleCalculateClick}>Calculate</button>
       <button onClick={handleClearClick}>Clear</button>

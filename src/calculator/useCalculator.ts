@@ -30,18 +30,21 @@ const parseCommands = (commands: CalculatorCommand[]) => {
     return commands.reduce((result, command) => {
       if (command.value === null) throw new Error('No value given');
 
+      let actualOperand = command.value;
+      if (command.hasOneThirdModifier) actualOperand /= 3;
+
       switch (command.arithmeticOperator) {
         case ArithmeticOperator.Add:
-          return result + command.value;
+          return result + actualOperand;
 
         case ArithmeticOperator.Subtract:
-          return result - command.value;
+          return result - actualOperand;
 
         case ArithmeticOperator.Multiply:
-          return result * command.value;
+          return result * actualOperand;
 
         case ArithmeticOperator.Divide:
-          return result / command.value;
+          return result / actualOperand;
 
         default:
           return result;
@@ -66,7 +69,6 @@ const calculatorReducer = produce<CalculatorState, [CalculatorAction]>(
         if (!lastCommand || canGoToNextCommand(lastCommand)) {
           const newCommand = createNewCommand();
           newCommand.value = action.value;
-          draft.goToNextCommand = false;
           draft.commands.push(newCommand);
         } else {
           if (lastCommand.value !== null) {
@@ -83,7 +85,16 @@ const calculatorReducer = produce<CalculatorState, [CalculatorAction]>(
 
         if (lastCommand) {
           lastCommand.arithmeticOperator = action.operator;
-          draft.goToNextCommand = true;
+        }
+
+        break;
+      }
+
+      case 'changeOneThirdModifier': {
+        const lastCommand = draft.commands.at(-1);
+
+        if (lastCommand) {
+          lastCommand.hasOneThirdModifier = !lastCommand.hasOneThirdModifier;
         }
 
         break;
@@ -96,7 +107,6 @@ const calculatorReducer = produce<CalculatorState, [CalculatorAction]>(
       case 'clear':
         draft.commands = [];
         draft.result = 0;
-        draft.goToNextCommand = false;
         break;
 
       default:
@@ -111,12 +121,13 @@ export const useCalculator = (
   const [state, dispatch] = useReducer(calculatorReducer, {
     commands: initialCommands,
     result: 0,
-    goToNextCommand: false,
   });
 
   const addDigit = (value: number) => dispatch({ type: 'addDigit', value });
   const changeOperator = (operator: ArithmeticOperator) =>
     dispatch({ type: 'changeOperator', operator });
+  const changeOneThirdModifier = () =>
+    dispatch({ type: 'changeOneThirdModifier' });
   const clear = () => dispatch({ type: 'clear' });
   const calculate = () => dispatch({ type: 'calculate' });
 
@@ -124,6 +135,7 @@ export const useCalculator = (
     state,
     addDigit,
     changeOperator,
+    changeOneThirdModifier,
     clear,
     calculate,
   };

@@ -43,7 +43,6 @@ export type CalculatorCommand = {
 export type CalculatorState = {
   commands: Array<CalculatorCommand>;
   result: number | string;
-  goToNextCommand: boolean;
 };
 
 export type CalculatorAction =
@@ -56,6 +55,9 @@ export type CalculatorAction =
       operator: ArithmeticOperator;
     }
   | {
+      type: 'changeOneThirdModifier';
+    }
+  | {
       type: 'calculate';
     }
   | {
@@ -66,6 +68,7 @@ export interface ICalculator {
   state: CalculatorState;
   addDigit: (value: number) => void;
   changeOperator: (operator: ArithmeticOperator) => void;
+  changeOneThirdModifier: () => void;
   clear: () => void;
   calculate: () => void;
 }
