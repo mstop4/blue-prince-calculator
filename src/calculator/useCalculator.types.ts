@@ -65,5 +65,4 @@ export interface ICalculator {
   changeOperator: (operator: ArithmeticOperator) => void;
   clear: () => void;
   calculate: () => void;
-  commandDisplay: string;
 }

@@ -115,10 +115,6 @@ export const useCalculator = (
     dispatch({ type: 'changeOperator', operator });
   const clear = () => dispatch({ type: 'clear' });
   const calculate = () => dispatch({ type: 'calculate' });
-  const commandDisplay = state.commands.reduce(
-    (total, command) => `${total}${command.value} `,
-    ''
-  );
 
   return {
     state,
@@ -126,6 +122,5 @@ export const useCalculator = (
     changeOperator,
     clear,
     calculate,
-    commandDisplay,
   };
 };
