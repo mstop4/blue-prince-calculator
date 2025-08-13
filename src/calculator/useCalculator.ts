@@ -1,27 +1,31 @@
 import { useReducer } from 'react';
 import {
   ArithmeticOperator,
+  CircleOperator,
   type CalculatorAction,
   type CalculatorCommand,
   type CalculatorState,
   type ICalculator,
+  OperandModifier,
 } from './useCalculator.types';
 import { produce } from 'immer';
 
 const createNewCommand = (): CalculatorCommand => ({
   value: null,
-  arithmeticOperator: null,
-  circleOperators: [],
-  operandModifier: null,
+  arithmeticOperator: ArithmeticOperator.None,
+  circleOperators: [CircleOperator.None, CircleOperator.None],
+  operandModifier: OperandModifier.None,
   hasOneThirdModifier: false,
 });
 
 const canGoToNextCommand = (command: CalculatorCommand) => {
-  return command.value !== null && command.arithmeticOperator !== null;
+  return (
+    command.value !== null &&
+    command.arithmeticOperator !== ArithmeticOperator.None
+  );
 };
 
 const parseCommands = (commands: CalculatorCommand[]) => {
-  // NOTE: will be expanded in the future to include more than addition
   try {
     return commands.reduce((result, command) => {
       if (command.value === null) throw new Error('No value given');

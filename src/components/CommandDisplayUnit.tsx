@@ -9,21 +9,27 @@ interface CommandDisplayUnitProps {
   command: CalculatorCommand;
 }
 
-export default function CommandDisplayUnit(props: CommandDisplayUnitProps) {
-  const { value, arithmeticOperator } = props.command;
+const operatorStyles = {
+  [ArithmeticOperator.None]: styles.none,
+  [ArithmeticOperator.Add]: styles.add,
+  [ArithmeticOperator.Subtract]: styles.subtract,
+  [ArithmeticOperator.Multiply]: styles.multiply,
+  [ArithmeticOperator.Divide]: styles.divide,
+};
 
-  // NOTE: Seems verbose
+export default function CommandDisplayUnit(props: CommandDisplayUnitProps) {
+  const { value, arithmeticOperator, hasOneThirdModifier } = props.command;
+
   const operatorClasses = classNames(
-    styles.unit,
-    { [styles.add]: arithmeticOperator === ArithmeticOperator.Add },
-    { [styles.subtract]: arithmeticOperator === ArithmeticOperator.Subtract },
-    { [styles.multiply]: arithmeticOperator === ArithmeticOperator.Multiply },
-    { [styles.divide]: arithmeticOperator === ArithmeticOperator.Divide }
+    { [styles.thirdOp]: hasOneThirdModifier },
+    arithmeticOperator !== null ? operatorStyles[arithmeticOperator] : ''
   );
 
+  const label = value !== null ? value : '_';
+
   return (
-    <div className={operatorClasses}>
-      {(value !== null ? value : '_') + ' '}
+    <div className={styles.unit}>
+      <div className={operatorClasses}>{label}</div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 export const ArithmeticOperator = {
+  None: 'N/A',
   Add: '+',
   Subtract: '-',
   Multiply: '*',
@@ -9,6 +10,7 @@ export type ArithmeticOperator =
   (typeof ArithmeticOperator)[keyof typeof ArithmeticOperator];
 
 export const CircleOperator = {
+  None: 'N/A',
   Square: 'S',
   Swap: 'D',
   RoundTo1: '~',
@@ -19,7 +21,8 @@ export const CircleOperator = {
 export type CircleOperator =
   (typeof CircleOperator)[keyof typeof CircleOperator];
 
-const OperandModifier = {
+export const OperandModifier = {
+  None: 'N/A',
   Ignore: 'X',
   Half: '/',
   Double: ':',
@@ -31,9 +34,9 @@ export type OperandModifier =
 
 export type CalculatorCommand = {
   value: number | null;
-  arithmeticOperator: ArithmeticOperator | null;
-  circleOperators: [CircleOperator?, CircleOperator?];
-  operandModifier: OperandModifier | null;
+  arithmeticOperator: ArithmeticOperator;
+  circleOperators: [CircleOperator, CircleOperator];
+  operandModifier: OperandModifier;
   hasOneThirdModifier: boolean;
 };
 
