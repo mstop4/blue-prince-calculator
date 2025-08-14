@@ -1,4 +1,5 @@
-const ArithmeticOperator = {
+export const ArithmeticOperator = {
+  None: 'N/A',
   Add: '+',
   Subtract: '-',
   Multiply: '*',
@@ -8,7 +9,8 @@ const ArithmeticOperator = {
 export type ArithmeticOperator =
   (typeof ArithmeticOperator)[keyof typeof ArithmeticOperator];
 
-const CircleOperator = {
+export const CircleOperator = {
+  None: 'N/A',
   Square: 'S',
   Swap: 'D',
   RoundTo1: '~',
@@ -19,7 +21,8 @@ const CircleOperator = {
 export type CircleOperator =
   (typeof CircleOperator)[keyof typeof CircleOperator];
 
-const OperandModifier = {
+export const OperandModifier = {
+  None: 'N/A',
   Ignore: 'X',
   Half: '/',
   Double: ':',
@@ -30,22 +33,29 @@ export type OperandModifier =
   (typeof OperandModifier)[keyof typeof OperandModifier];
 
 export type CalculatorCommand = {
-  value: number;
-  arithmeticOperator: ArithmeticOperator | null;
-  circleOperators: [CircleOperator?, CircleOperator?];
-  operandModifier: OperandModifier | null;
+  value: number | null;
+  arithmeticOperator: ArithmeticOperator;
+  circleOperators: [CircleOperator, CircleOperator];
+  operandModifier: OperandModifier;
   hasOneThirdModifier: boolean;
 };
 
 export type CalculatorState = {
   commands: Array<CalculatorCommand>;
-  result: number;
+  result: number | string;
 };
 
 export type CalculatorAction =
   | {
       type: 'addDigit';
       value: number;
+    }
+  | {
+      type: 'changeOperator';
+      operator: ArithmeticOperator;
+    }
+  | {
+      type: 'changeOneThirdModifier';
     }
   | {
       type: 'calculate';
@@ -57,7 +67,8 @@ export type CalculatorAction =
 export interface ICalculator {
   state: CalculatorState;
   addDigit: (value: number) => void;
+  changeOperator: (operator: ArithmeticOperator) => void;
+  changeOneThirdModifier: () => void;
   clear: () => void;
   calculate: () => void;
-  commandDisplay: string;
 }

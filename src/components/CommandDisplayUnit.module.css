@@ -1,0 +1,45 @@
+.unit {
+  font-size: 2rem;
+  font-weight: bold;
+  display: inline-block;
+  margin: 0 0.5rem;
+  position: relative;
+}
+
+.thirdOp {
+  background: linear-gradient(
+    to bottom,
+    DimGray 40%,
+    var(--main-colour) 33% 67%,
+    DimGray 67%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.none {
+  --main-colour: white;
+  color: var(--main-colour);
+}
+
+.add {
+  --main-colour: skyblue;
+  color: var(--main-colour);
+}
+
+.subtract {
+  --main-colour: Gold;
+  color: var(--main-colour);
+}
+
+.multiply {
+  --main-colour: LightPink;
+  color: var(--main-colour);
+}
+
+.divide {
+  --main-colour: MediumPurple;
+  color: var(--main-colour);
+}
