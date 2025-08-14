@@ -62,8 +62,8 @@ function App() {
       />
       <OneThirdButton {...{ changeOneThirdModifier }} />
       <br />
-      <button onClick={handleCalculateClick}>Calculate</button>
-      <button onClick={handleClearClick}>Clear</button>
+      <button onClick={handleCalculateClick}>=</button>
+      <button onClick={handleClearClick}>AC</button>
       <br />
       {commandDisplay}
       <p>{state.result}</p>
